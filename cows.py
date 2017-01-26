@@ -1,21 +1,21 @@
-import os
+import re
 import random
+import subprocess
+
 class Cow:
     def __init__(self, filename ='data_cows.txt'):
         self.cows = []
         self.filename = filename
 
     def find_buddies(self):
-        """Saves available .cow file names in a file with name 
-         self.filename, and loads to self.cows"""
+        """
+        Finds and returns names of available cows
+        """
 
-        self.speak('Getting my buddies...', cow='default')
-        import time
-        time.sleep(2)
-        os.system('cowsay -l > %s' %self.filename)
-        with open(self.filename) as infile:
-            cow_dir = infile.readline()
-            self.cows=reduce(lambda x,y: x+y, map(str.split, infile.readlines()))
+        cow_data=subprocess.check_output(
+                ['cowsay','-l']).decode("utf-8")
+        cow_dir, cowsstr= cow_data.split('\n',1)
+        self.cows = cowsstr.replace('\n',' ').split()
         return self.cows
 
     def speak(self, txt, cow = '', eyes='', figspeak=False, lolcat=False, width = 40):
@@ -32,16 +32,30 @@ class Cow:
             cow = cows[random.randint(0,len(cows)-1)]
         if eyes:
             eyes = '-e '+eyes
-        if not figspeak:
-            cmd='cowsay %s -f %s  -W %d %s' %(eyes, cow, width, txt)
-        else:
-            cmd='figlet %s | cowsay %s -f %s -n -W %d'%(txt,eyes,cow,width)
-        if lolcat:
-            cmd += '| lolcat'
-        os.system(cmd)
+        
+        #cmd='figlet %s | cowsay %s -f %s -n -W %d'%(txt,eyes,cow,width)
+        #cmd='cowsay %s -f %s  -W %d %s' %(eyes, cow, width, txt)
+
+        if figspeak:
+            pass#txt = subprocess.check_output(['figlet',txt]).decode("utf-8")
+        cmds='%s -f %s -n -W %d'%(eyes,cow,width)
+        args = ['cowsay'] + cmds.split()
+
+        ps = subprocess.Popen(['figlet',txt], stdout=subprocess.PIPE)
+        cowsay = subprocess.check_output(args, stdin=ps.stdout)
+        ps.wait()
+        #txt = cowsay.decode('utf-8')
+        #txt_sp = txt.split('\n')
+        #for line in txt_sp:
+            #print(line +(60-len(line))*' '+ line)
+        #print(repr(txt))
+        lolcat = subprocess.Popen(['lolcat'], stdin=subprocess.PIPE)
+        lolcat.communicate(cowsay)
+
 
 
 if __name__ == '__main__':
     ku = Cow()
+    print (ku.find_buddies())
     eyes = "HS" if random.randint(0,9) == 0 else ""
     ku.speak('HEI', figspeak=True)

@@ -49,7 +49,7 @@ def read_csv():
     df = {'dag':dag,'fra':fra,'til':til,'emne':emne}
     return df
 df  = read_csv()
-print df
+print(df)
 
 
 def get_datetime(DOW, week, year, clock):
@@ -113,35 +113,26 @@ while True:
     prev_i = np.argmax(tds_prev)
     os.system('clear')
 
-    mins = int((time_left // 60)%60)
-    hours = int(time_left     // 3600)
-    time_str = "%s"
-    time_str %= str(hours) + " hours %s" if hours else "%s"
-    time_str %= str(mins) + " mins left." if mins else "."
-    print "Klokken er naa ", now
-    if time_str == '.':
-        time_str = "NOW!"
+    if time_left:
+        mins = int((time_left // 60)%60)
+        hours = int(time_left     // 3600)
+        time_str = "%s"
+        time_str %= str(hours) + " hours %s" if hours else "%s"
+        time_str %= str(mins) + " mins left." if mins else "."
+        if time_str == '.':
+            time_str = "NOW!"
+    print("Klokken er naa ", now)
 
     #The different cases of printing
     if now < stop_dts[prev_i]:
-	toiprint("DO NOT ENTER", border = True)
+        toiprint("DO NOT ENTER", border = True)
         toiprint( "%s lecture \nmost likely in progress.\nLecture ends %s"%(subjects[prev_i], stop_dts[prev_i].time()))
     elif np.ma.count(tds_next) == 0:
         cow.speak( "No more lectures this week. \(Software may need updating.\)",
                   figspeak = True, lolcat=True)
-    elif start_dates[next_i] == today:
-	print 123
-	cow.speak("Next lecture:n"+'  %s '%subjects[next_i]
-                +" %s "%(start_dts[next_i]).time()+ time_str ,
-                figspeak = True, lolcat =True, width = 100)
     else:
-	cow.speak("kl %s "%(start_dts[next_i]).time()
+        cow.speak("kl %s "%(start_dts[next_i]).time()
                 +'  %s '%subjects[next_i] , 
                 figspeak = True, lolcat =True, width = 100)
         toiprint(time_str )
     time.sleep(60)
-    
-
-
-
-
