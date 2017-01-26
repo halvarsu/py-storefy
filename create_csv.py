@@ -1,3 +1,8 @@
+"""
+Downloads and saves information abouts rooms on uio. 
+TODO:
+    - Remove dependencies of bs4, pandas and numpy
+"""
 # coding: utf-8
 
 from bs4 import BeautifulSoup
