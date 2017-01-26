@@ -9,6 +9,9 @@ class Cow:
         """Saves available .cow file names in a file with name 
          self.filename, and loads to self.cows"""
 
+        self.speak('Getting my buddies...', cow='default')
+        import time
+        time.sleep(2)
         os.system('cowsay -l > %s' %self.filename)
         with open(self.filename) as infile:
             cow_dir = infile.readline()
@@ -30,7 +33,7 @@ class Cow:
         if eyes:
             eyes = '-e '+eyes
         if not figspeak:
-            cmd='cowsay %s -f %s %s -W %d' %(eyes, cow, txt, width)
+            cmd='cowsay %s -f %s  -W %d %s' %(eyes, cow, width, txt)
         else:
             cmd='figlet %s | cowsay %s -f %s -n -W %d'%(txt,eyes,cow,width)
         if lolcat:
