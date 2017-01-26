@@ -121,18 +121,21 @@ while True:
         time_str %= str(mins) + " mins left." if mins else "."
         if time_str == '.':
             time_str = "NOW!"
-    print("Klokken er naa ", now)
+    print("Klokken er naa "+str(now)[11:19])
 
     #The different cases of printing
     if now < stop_dts[prev_i]:
         toiprint("DO NOT ENTER", border = True)
-        toiprint( "%s lecture \nmost likely in progress.\nLecture ends %s"%(subjects[prev_i], stop_dts[prev_i].time()))
+        toiprint( "%s lecture \nmost likely in progress.")
+        cow.speak( "Lecture ends %s"%(subjects[prev_i], 
+                                      stop_dts[prev_i].time()),
+                   lolcat=True, width = 100)
     elif np.ma.count(tds_next) == 0:
-        cow.speak( "No more lectures this week. \(Software may need updating.\)",
-                  figspeak = True, lolcat=True)
+        cow.speak( "No more lectures this week. ",
+                  lolcat=True, width = 100)
     else:
         cow.speak("kl %s "%(start_dts[next_i]).time()
                 +'  %s '%subjects[next_i] , 
-                figspeak = True, lolcat =True, width = 100)
+                 lolcat =True, width = 100)
         toiprint(time_str )
     time.sleep(60)

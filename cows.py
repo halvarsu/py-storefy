@@ -18,7 +18,7 @@ class Cow:
         self.cows = cowsstr.replace('\n',' ').split()
         return self.cows
 
-    def speak(self, txt, cow = '', eyes='', figspeak=False, lolcat=False, width = 40):
+    def speak(self, txt, cow = '', eyes='', lolcat=False, width = 40):
         """
         : txt : ku-manus
         : cow : the name of a cow file in cow path. 
@@ -36,8 +36,6 @@ class Cow:
         #cmd='figlet %s | cowsay %s -f %s -n -W %d'%(txt,eyes,cow,width)
         #cmd='cowsay %s -f %s  -W %d %s' %(eyes, cow, width, txt)
 
-        if figspeak:
-            pass#txt = subprocess.check_output(['figlet',txt]).decode("utf-8")
         cmds='%s -f %s -n -W %d'%(eyes,cow,width)
         args = ['cowsay'] + cmds.split()
 
@@ -58,4 +56,4 @@ if __name__ == '__main__':
     ku = Cow()
     print (ku.find_buddies())
     eyes = "HS" if random.randint(0,9) == 0 else ""
-    ku.speak('HEI', figspeak=True)
+    ku.speak('HEI')
