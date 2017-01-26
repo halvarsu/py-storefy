@@ -40,25 +40,25 @@ def download_room(room_name,week=None,building ='BL24',year=None, verbose = True
     url = get_url(room,building,week,year)
     outfile = get_filename(room,building,week,year)
     cmd = "wget '{}' -O '{}' -q".format(url, outfile)
-    print 'executing command: \n'+cmd+'\n'
+    print('executing command: \n'+cmd+'\n')
     result = os.system(cmd)
     
     if result == 256:
-        raise IOError, 'Could not access folder %s ' %folder
-        raise IOError, 'Could not download file'
+        raise IOError
+        raise IOError
     if verbose:
         roomstr = '{}, {},'.format(room, room_name) if room!=room_name else room
-        print '-'*60
-        print "Successfully downloaded html for room {} in \nbuilding {}, week {}, {}".format(roomstr, building, week, year)
-        print '-'*60
+        print( '-'*60)
+        print( "Successfully downloaded html for room {} in \nbuilding {}, week {}, {}".format(roomstr, building, week, year))
+        print( '-'*60)
     return outfile
 
 
 def html2df(filename, verbose = True):
     if verbose:
-        print '-'*60
-        print ("Converting html '{}' to data frame".format(filename))
-        print '-'*60
+        print( '-'*60)
+        print("Converting html '{}' to data frame".format(filename))
+        print( '-'*60)
     try:
         page = open(filename) 
     except IOError:
@@ -105,7 +105,7 @@ def create_csv(room):
     # outfile.replace('html','csv') was considered dangerous if 
     # string contains html elsewhere
     df.to_csv(csv_file)
-    print df
+    print( df)
 
 
 if __name__ == "__main__":
@@ -115,17 +115,21 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     if len(sys.argv) > 1:
-        room = sys.argv[1]
+        if sys.argv[1] == "+":
+            week = (str(int(get_current_week()) +int(sys.argv[2])))
+        else:
+            week = sys.argv[1]
     else:
-        room = 'storefy'
-    html_file  = download_room(room)
+        week = get_current_week()
+    room = 'storefy'
+    html_file  = download_room(room, week = week)
     df = html2df(html_file)
 
     csv_file = html_file.replace('html','csv') 
-    print '-'*60
-    print "Saving csv to file '%s'"% csv_file 
+    print( '-'*60)
+    print( "Saving csv to file '%s'"% csv_file )
     df.to_csv(csv_file)
-    print '-'*60
-    print df
+    print( '-'*60)
+    print( df)
 
 
