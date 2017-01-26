@@ -2,6 +2,7 @@ import time, os
 from datetime import datetime, date
 import numpy as np
 import argparse
+from cows import Cow
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-m","--mode",help="set mode for figlet",
@@ -71,6 +72,8 @@ def getDatesAndDts(times,dager):
         dates.append(date)   
     return  dates, dts
 
+
+
 def toiprint(txt ,border=False):
     #os.system("figlet -m 12 -f big '%s' -t | lolcat"  %txt)
     if border:
@@ -83,6 +86,7 @@ def toiprint(txt ,border=False):
 
 df = read_csv() 
 
+cow = Cow()
 
 
 while True:
@@ -105,17 +109,33 @@ while True:
     time_left = np.amin(tds_next)
     prev_i = np.argmax(tds_prev)
     os.system('clear')
+
+    mins = int((time_left // 60)%60)
+    hours = int(time_left     // 3600)
+    time_str = "%s"
+    time_str %= str(hours) + " hours %s" if hours else "%s"
+    time_str %= str(mins) + " mins left." if mins else "."
+    print "Klokken er naa ", now
+    if time_str == '.':
+        time_str = "NOW!"
+
     #The different cases of printing
     if now < stop_dts[prev_i]:
 	toiprint("DO NOT ENTER", border = True)
-        toiprint( "%s lecture most likely in progress.\nLecture ends %s"%(subjects[prev_i], stop_dts[prev_i].time()))
+        toiprint( "%s lecture \nmost likely in progress.\nLecture ends %s"%(subjects[prev_i], stop_dts[prev_i].time()))
     elif np.ma.count(tds_next) == 0:
-        toiprint( "No more lectures this week. \n(Software may need updating.)")
+        cow.speak( "No more lectures this week. \(Software may need updating.\)",
+                  figspeak = True, lolcat=True)
     elif start_dates[next_i] == today:
 	print 123
-	toiprint("Next lecture:\n"+'  %s \n'%subjects[next_i]+" %s \n"%(start_dts[next_i]).time()+"(%d min left)" %(time_left/60) )
+	cow.speak("Next lecture:n"+'  %s '%subjects[next_i]
+                +" %s "%(start_dts[next_i]).time()+ time_str ,
+                figspeak = True, lolcat =True, width = 100)
     else:
-	toiprint("Next lecture:\n"+'  %s \n'%subjects[next_i]+" %s \n"%(start_dts[next_i]).time()+"(%d min left)" %(time_left/60) )
+	cow.speak("kl %s "%(start_dts[next_i]).time()
+                +'  %s '%subjects[next_i] , 
+                figspeak = True, lolcat =True, width = 100)
+        toiprint(time_str )
     time.sleep(60)
     
 
