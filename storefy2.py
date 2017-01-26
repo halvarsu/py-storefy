@@ -126,9 +126,8 @@ while True:
     #The different cases of printing
     if now < stop_dts[prev_i]:
         toiprint("DO NOT ENTER", border = True)
-        toiprint( "%s lecture \nmost likely in progress.")
-        cow.speak( "Lecture ends %s"%(subjects[prev_i], 
-                                      stop_dts[prev_i].time()),
+        toiprint( "%s lecture \nmost likely in progress." %(subjects[prev_i]))
+        cow.speak( "Lecture ends %s"%(stop_dts[prev_i].time()),
                    lolcat=True, width = 100)
     elif np.ma.count(tds_next) == 0:
         cow.speak( "No more lectures this week. ",
