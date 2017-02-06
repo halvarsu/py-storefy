@@ -1,6 +1,7 @@
 """Prints info about status in store fysiske lesesal from csv-files
 TODO: - automatic download of csv-files
-      - two-column cow-printing"""
+      - two-column cow-printing
+      - correctly printing plural/non-plural"""
 import time, os
 from datetime import datetime, date
 import numpy as np
