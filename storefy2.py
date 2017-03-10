@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """Prints info about status in store fysiske lesesal from csv-files
 TODO: - automatic download of csv-files
       - two-column cow-printing

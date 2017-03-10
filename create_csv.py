@@ -1,9 +1,10 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """
 Downloads and saves information abouts rooms on uio. 
 TODO:
     - Remove dependencies of bs4, pandas and numpy
 """
-# coding: utf-8
 
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -109,7 +110,7 @@ def create_csv(room):
     csv_file = html_file[:-4]+'csv' 
     # outfile.replace('html','csv') was considered dangerous if 
     # string contains html elsewhere
-    df.to_csv(csv_file)
+    df.to_csv(csv_file, encoding = 'utf-8')
     print( df)
 
 
@@ -120,7 +121,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     if len(sys.argv) > 1:
+        # python create_csv.py + x => Get week (current + x) 
         if sys.argv[1] == "+":
+
             week = (str(int(get_current_week()) +int(sys.argv[2])))
         else:
             week = sys.argv[1]
@@ -133,7 +136,7 @@ if __name__ == "__main__":
     csv_file = html_file.replace('html','csv') 
     print( '-'*60)
     print( "Saving csv to file '%s'"% csv_file )
-    df.to_csv(csv_file)
+    df.to_csv(csv_file, encoding = 'utf-8')
     print( '-'*60)
     print( df)
 
