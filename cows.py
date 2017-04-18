@@ -8,6 +8,7 @@ class Cow:
     def __init__(self, filename ='data_cows.txt'):
         self.cows = []
         self.filename = filename
+	self.current_cow = 0
 
     def find_buddies(self):
         """
@@ -18,6 +19,7 @@ class Cow:
                 ['cowsay','-l']).decode("utf-8")
         cow_dir, cowsstr= cow_data.split('\n',1)
         self.cows = cowsstr.replace('\n',' ').split()
+	self.current_cow = len(self.cows ) -1
         return self.cows
 
     def speak(self, txt, cow = '', eyes='', lolcat=False, width = 40):
@@ -31,7 +33,9 @@ class Cow:
             if not self.cows:
                 self.find_buddies()
             cows = self.cows
-            cow = cows[random.randint(0,len(cows)-1)]
+            cow = cows[self.current_cow]
+	    self.current_cow += 1
+	    self.current_cow %= (len(self.cows) - 1)
         if eyes:
             eyes = '-e '+eyes
         
